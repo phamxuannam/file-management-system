@@ -1,0 +1,46 @@
+
+
+
+
+
+*Roles/Permissions:
+user normal 	   -> upload file, CRUD file minh` upload (user->id === posts->user_id)
+area manager       -> user normal, + delete và edit visibility file trong cùng area(North,Central,South)
+super admin	  	   -> all permissions
+=>file public không cần login vẫn download được
+
+*Roles/Permissions:
+	UserNomal:
+		-view file, edit file, delete file, create file
+	Area(N,C,S):
+		-view file, edit file, delete file, create file 
+		-view file area, edit file area, delete file area, create file area, public file area
+
+	SuperAdmin:
+		-all permissions
+
+*DB 
+-area : id, name 
+
+-users: id, fullname, email, password, area_id
+
+-files: id, name, file upload, description, user_id, area_id, visibility('private','area','public'), created_at, updated_at 
+
+-permissions
+
+-roles
+
+=> (users 1 - n files n  - 1 areas 1 - n users)
+
+
+*Display
+
+-Guest: hiển thị các file public(N,C,S) và download
+-Auth : 
+	+ Login
+	+ UserNormal:   1 List của bản thân -> CRUD & download
+	+ Area Manager: UserNormal và List Của Area(N,C,S) -> edit(visibility), delete, download 
+	+ Super Admin :  
+
+Muốn view files area South -> user hasRoles('AreaManager') && user hasArea('South') 
+Khi user create file, mặc định là private, khi AreaManager set area để các user cùng area xem và set public để ai cũng được xem, dropdown visibility('private','area','public')
