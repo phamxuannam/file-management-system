@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\PermissionRequest;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
@@ -31,44 +32,60 @@ class PermissionController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PermissionRequest $request)
     {
-        $validated = $request->validate([
-            
-        ]);
+        $validated = $request->validated();
+        Permission::create($validated);
 
-
+        return redirect()
+                    ->route('permissions.index')
+                    ->with('success', 'Tao Permission Thanh Cong.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    public function show(string $id){}
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Permission $permission)
     {
-        //
+        return view('permissions.edit',[
+            'permission' => $permission 
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(PermissionRequest $request, Permission $permission)
     {
-        //
+        $validated = $request->validated();
+        $permission->update($validated);
+
+        return redirect()
+                    ->route('permissions.index')
+                    ->with('success','Cap Nhat Permission Thanh Cong.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Permission $permission)
     {
-        //
+        if($permission->delete()){
+            return response()->json([
+                'status' => true,
+                'message' => 'Xoa Permission Thanh Cong'
+            ]);
+        }
+
+        return response()->json([
+                'status' => false,
+                'message' => 'Loi, Khong The Xoa Permission'
+        ]);
+        
     }
 }

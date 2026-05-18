@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -23,34 +24,30 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+    public function create(){}
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    public function store(Request $request){}
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    public function show(string $id){}
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit(User $user)
     {
+        $roles = Role::latest()->get();
+        $hasRoles = $user->role->pluck('id');
+
         return view('users.edit',[
-            'user' => $user
+            'user'  => $user,
+            'roles' => $roles,
+            'hasRoles' => $hasRoles
         ]);
     }
 
@@ -61,6 +58,7 @@ class UserController extends Controller
     {
         $validated = $request->validated();
         $user ->update($validated);
+        $user->syncRoles($request->role);
 
         return redirect()->route('users.index')->with('success', 'Cap Nhat User Thanh Cong');
     }
@@ -77,8 +75,8 @@ class UserController extends Controller
             ]);
         }
         return response()->json([
-                'status' => false,
-                'message' => 'Loi, Khong The Xoa User'
-            ]);
+            'status' => false,
+            'message' => 'Loi, Khong The Xoa User'
+        ]);
     }
 }

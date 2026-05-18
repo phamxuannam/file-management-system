@@ -25,7 +25,7 @@ class PermissionRequest extends FormRequest
     {
         return [
             'name' => ['required', 'min:3', 
-                Rule::unique('permissions')->ignore($this)
+                Rule::unique('permissions','name')->ignore($this->permission)
             ]
         ];
     }

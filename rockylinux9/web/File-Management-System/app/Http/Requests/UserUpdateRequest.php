@@ -29,7 +29,7 @@ class UserUpdateRequest extends FormRequest
             'password' => ['required', 'confirmed', 
                 Password::min(8)->mixedCase()->numbers()->symbols()
             ],
-
+            'area_id' => ['required', 'exists: areas,id']
         ];
     }
 }

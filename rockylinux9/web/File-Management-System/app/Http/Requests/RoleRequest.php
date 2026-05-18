@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class AreaRequest extends FormRequest
+class RoleRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,9 +24,8 @@ class AreaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min: 1', [
-                    Rule::unique('areas','name')->ignore($this->area)
-                ]
+            'name' => ['required', 'min:3', 
+                Rule::unique('roles','name')->ignore($this->role)
             ]
         ];
     }

@@ -32,21 +32,20 @@ class AreaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AreaRequest $request)
     {
         $validated = $request -> validated();
         Area::create($validated);
 
-        return redirect()->route('areas.index')->with('success', 'Tao Area Thanh Cong');
+        return redirect()
+                ->route('areas.index')
+                ->with('success', 'Tao Area Thanh Cong');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    public function show(string $id){}
 
     /**
      * Show the form for editing the specified resource.
@@ -66,7 +65,9 @@ class AreaController extends Controller
         $validated = $request->validated();
         $area->update($validated);
         
-        return redirect()->route('areas.index')->with('success', 'Cap Nhat Area Thanh Cong');
+        return redirect()
+                ->route('areas.index')
+                ->with('success', 'Cap Nhat Area Thanh Cong');
     }
 
     /**

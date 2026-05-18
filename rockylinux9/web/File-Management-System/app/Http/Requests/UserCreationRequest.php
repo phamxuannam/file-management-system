@@ -4,9 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Validation\Rules\Password as RulesPassword;
 
-class AreaRequest extends FormRequest
+class UserCreationRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +25,10 @@ class AreaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min: 1', [
-                    Rule::unique('areas','name')->ignore($this->area)
-                ]
-            ]
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'password' => ['required', Password::min(8)->mixedCase()->numeric()->symbols()],
+            'area_id' => ['required', 'exists:areas, id']
         ];
     }
 }
