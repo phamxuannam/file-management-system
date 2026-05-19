@@ -13,22 +13,22 @@ class FilePolicy
      */
     public function viewAny(?User $user, File $file): bool
     {
-        if($file->visibility === 3) return true;
+        if ($file->visibility === 3) return true;
 
-        if(!$user) return false;
+        if (!$user) return false;
 
-        if($user->id === $file->user_id) return true;
+        if ($user->id === $file->user_id) return true;
 
         return $user->hasRole('area_manager') && $user->area_id === $file->user->area_id;
     }
 
     public function download(?User $user, File $file): bool
     {
-        if($file->visibility === 3) return true;
+        if ($file->visibility === 3) return true;
 
-        if(!$user) return false;
+        if (!$user) return false;
 
-        if($user->id === $file->user_id) return true;
+        if ($user->id === $file->user_id) return true;
 
         return $user->hasRole('area_manager') && $user->area_id === $file->user->area_id;
     }
@@ -36,7 +36,10 @@ class FilePolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, File $file): bool{return false;}
+    public function view(User $user, File $file): bool
+    {
+        return false;
+    }
 
     /**
      * Determine whether the user can create models.
@@ -51,8 +54,8 @@ class FilePolicy
      */
     public function update(User $user, File $file): bool
     {
-        return  ($user->can('file.edit') && $user->id === $file->user_id) || 
-                ($user->hasRole('area_manager') && $user->area_id === $file->user->area_id);
+        return (($user->can('file.edit') && $user->id === $file->user_id)) ||
+            (($user->hasRole('area_manager') && $user->area_id === $file->user->area_id));
     }
 
     /**
@@ -60,17 +63,23 @@ class FilePolicy
      */
     public function delete(User $user, File $file): bool
     {
-        return  ($user->can('file.delete') && $user->id === $file->user_id) || 
-                ($user->hasRole('area_manager') && $user->area_id === $file->user->area_id);
+        return ($user->can('file.delete') && $user->id === $file->user_id) ||
+            ($user->hasRole('area_manager') && $user->area_id === $file->user->area_id);
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, File $file): bool{return false;}
+    public function restore(User $user, File $file): bool
+    {
+        return false;
+    }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, File $file): bool{return false;}
+    public function forceDelete(User $user, File $file): bool
+    {
+        return false;
+    }
 }

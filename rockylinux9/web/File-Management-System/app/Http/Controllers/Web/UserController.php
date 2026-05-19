@@ -10,7 +10,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
-{   
+{
     use AuthorizesRequests;
 
     public function __construct()
@@ -23,7 +23,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::latest()->paginate(25);
-        return view('users.list',[
+        return view('users.list', [
             'users' => $users
         ]);
     }
@@ -31,17 +31,17 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(){}
+    public function create() {}
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request){}
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id){}
+    public function show(string $id) {}
 
     /**
      * Show the form for editing the specified resource.
@@ -51,7 +51,7 @@ class UserController extends Controller
         $roles = Role::latest()->get();
         $hasRoles = $user->roles->pluck('id');
 
-        return view('users.edit',[
+        return view('users.edit', [
             'user'  => $user,
             'roles' => $roles,
             'hasRoles' => $hasRoles
@@ -64,7 +64,7 @@ class UserController extends Controller
     public function update(UserUpdateRequest $request, User $user)
     {
         $validated = $request->validated();
-        $user ->update($validated);
+        $user->update($validated);
         $user->syncRoles($request->role);
 
         return redirect()->route('users.index')->with('success', 'Cap Nhat User Thanh Cong');
@@ -75,7 +75,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        if($user->delete()){
+        if ($user->delete()) {
             return response()->json([
                 'status' => true,
                 'message' => 'Xoa User Thanh Cong'

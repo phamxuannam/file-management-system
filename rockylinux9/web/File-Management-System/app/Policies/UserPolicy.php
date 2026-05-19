@@ -2,7 +2,6 @@
 
 namespace App\Policies;
 
-use Illuminate\Auth\Access\Response;
 use App\Models\User;
 
 class UserPolicy
@@ -10,14 +9,15 @@ class UserPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user, User $model): bool{
-        return $user->can('user.view');
+    public function viewAny(User $user, User $model): bool
+    {
+        return $user->can('user.view') && $user->id === $model->id;
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, User $model): bool 
+    public function view(User $user, User $model): bool
     {
         return false;
     }
@@ -25,7 +25,7 @@ class UserPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): bool
+    public function create(?User $user): bool
     {
         return $user->can('user.create');
     }
@@ -35,24 +35,31 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
+        if ($user->can('user.edit')) return true; //super admin assign roles for user
+
         return $user->id === $model->id;
     }
-    //$user->id === $model->id
     /**
      * Determine whether the user can delete the model.
      */
     public function delete(User $user, User $model): bool
     {
-        return $user->can('user.delete') && $user->id !== $model->id;
+        return $user->can('user.delete') && $user->id !== $model->id; // super admin
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, User $model): bool{return false;}
+    public function restore(User $user, User $model): bool
+    {
+        return false;
+    }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, User $model): bool{return false;}
+    public function forceDelete(User $user, User $model): bool
+    {
+        return false;
+    }
 }

@@ -24,8 +24,5 @@ RUN sed -i 's|DocumentRoot "/var/www/html"|DocumentRoot "/var/www/html/public"|'
 # Thêm ServerName để tránh warning
 RUN echo "ServerName localhost" >> /etc/httpd/conf/httpd.conf
 
-
-
-
 # Start cả php-fpm + httpd
 CMD ["/bin/bash", "-c", "php-fpm -D && httpd -D FOREGROUND"]

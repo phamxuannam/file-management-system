@@ -24,7 +24,7 @@ class InitRBAC extends Command
 
         // chạy migration mới được thêm vào
         Artisan::call('migrate', [
-        '--force' => true,
+            '--force' => true,
         ]);
 
         // clear permission cache
@@ -33,11 +33,16 @@ class InitRBAC extends Command
 
         // Permissions
         $models = [
-            'area', 'user', 'file'
+            'area',
+            'user',
+            'file'
         ];
 
         $actions = [
-            'create', 'view', 'edit', 'delete'
+            'create',
+            'view',
+            'edit',
+            'delete'
         ];
 
         foreach ($models as $model) {
@@ -48,7 +53,7 @@ class InitRBAC extends Command
             }
         }
 
-        $filePermissions = ['file.download','file.visibility'];
+        $filePermissions = ['file.download', 'file.visibility'];
         foreach ($filePermissions as $filePermission) {
             Permission::firstOrCreate([
                 'name' => $filePermission,
@@ -56,10 +61,6 @@ class InitRBAC extends Command
         }
 
         // Roles
-
-        $guestRole = Role::firstOrCreate([
-            'name' => 'guest',
-        ]);
 
         $normalUserRole = Role::firstOrCreate([
             'name' => 'normal_user',
@@ -75,19 +76,22 @@ class InitRBAC extends Command
 
         // Assign Permissions for Roles
 
-        $guestRole->syncPermissions([
-            'file.view', 'file.download',
-            'user.create'
-        ]);
-
         $normalUserRole->syncPermissions([
-            'file.create', 'file.view', 'file.edit', 'file.delete', 'file.download',
-            'user.edit'
+            'file.create',
+            'file.view',
+            'file.edit',
+            'file.delete',
+            'file.download',
         ]);
 
         $areaManagerRole->syncPermissions([
-            'file.create', 'file.view', 'file.edit', 'file.delete', 'file.download', 'file.visibility',
-            'user.view', 'user.edit'
+            'file.create',
+            'file.view',
+            'file.edit',
+            'file.delete',
+            'file.download',
+            'file.visibility',
+            'user.view',
         ]);
 
         $superAdminRole->syncPermissions(
@@ -95,11 +99,12 @@ class InitRBAC extends Command
         );
 
         //account admin  & assign role
-       
+
         $admin = User::firstOrCreate(
             [
-                'email' => 'admin@gmail.com']
-            ,[
+                'email' => 'admin@gmail.com'
+            ],
+            [
                 'fullname' => 'Super Admin',
                 'password' => Hash::make('1234567890'),
                 'area_id'  => 1
@@ -108,6 +113,6 @@ class InitRBAC extends Command
 
         $admin->syncRoles([
             $superAdminRole,
-        ]);    
+        ]);
     }
 }
