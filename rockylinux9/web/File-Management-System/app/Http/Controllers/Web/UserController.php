@@ -7,9 +7,16 @@ use App\Http\Requests\UserUpdateRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserController extends Controller
-{
+{   
+    use AuthorizesRequests;
+
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
     /**
      * Display a listing of the resource.
      */
@@ -42,7 +49,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::latest()->get();
-        $hasRoles = $user->role->pluck('id');
+        $hasRoles = $user->roles->pluck('id');
 
         return view('users.edit',[
             'user'  => $user,

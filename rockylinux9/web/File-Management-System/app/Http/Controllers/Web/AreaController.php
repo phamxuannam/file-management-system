@@ -6,10 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AreaRequest;
 use App\Models\Area;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+
+
 
 class AreaController extends Controller
 {
+    use AuthorizesRequests;
+
+    public function __construct() 
+    {
+        $this->authorizeResource(Area::class, 'area');
+    }
+
     /**
      * Display a listing of the resource.
      */

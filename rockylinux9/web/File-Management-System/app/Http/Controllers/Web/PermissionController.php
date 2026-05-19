@@ -7,8 +7,18 @@ use App\Http\Requests\PermissionRequest;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 
-class PermissionController extends Controller
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
+
+class PermissionController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(){
+        return [
+            new Middleware('permission: view permissions', only:['index']),
+            
+        ];
+    }
     /**
      * Display a listing of the resource.
      */
