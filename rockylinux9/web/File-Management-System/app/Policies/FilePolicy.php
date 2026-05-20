@@ -11,15 +11,9 @@ class FilePolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(?User $user, File $file): bool
+    public function viewAny(User $user): bool
     {
-        if ($file->visibility === 3) return true;
-
-        if (!$user) return false;
-
-        if ($user->id === $file->user_id) return true;
-
-        return $user->hasRole('area_manager') && $user->area_id === $file->user->area_id;
+        return $user->can('file.view');
     }
 
     public function download(?User $user, File $file): bool
@@ -28,7 +22,7 @@ class FilePolicy
 
         if (!$user) return false;
 
-        if ($user->id === $file->user_id) return true;
+        if ($user->can('file.download') && $user->id === $file->user_id) return true;
 
         return $user->hasRole('area_manager') && $user->area_id === $file->user->area_id;
     }
@@ -54,8 +48,8 @@ class FilePolicy
      */
     public function update(User $user, File $file): bool
     {
-        return (($user->can('file.edit') && $user->id === $file->user_id)) ||
-            (($user->hasRole('area_manager') && $user->area_id === $file->user->area_id));
+        return  (($user->can('file.edit') && $user->id === $file->user_id)) ||
+                (($user->hasRole('area_manager') && $user->area_id === $file->user->area_id));
     }
 
     /**
@@ -63,8 +57,8 @@ class FilePolicy
      */
     public function delete(User $user, File $file): bool
     {
-        return ($user->can('file.delete') && $user->id === $file->user_id) ||
-            ($user->hasRole('area_manager') && $user->area_id === $file->user->area_id);
+        return  ($user->can('file.delete') && $user->id === $file->user_id) ||
+                ($user->hasRole('area_manager') && $user->area_id === $file->user->area_id);
     }
 
     /**

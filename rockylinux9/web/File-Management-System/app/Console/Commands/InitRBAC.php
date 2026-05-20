@@ -7,6 +7,7 @@ use Illuminate\Console\Attributes\Description;
 use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -22,14 +23,18 @@ class InitRBAC extends Command
     public function handle()
     {
 
-        // chạy migration mới được thêm vào
-        Artisan::call('migrate', [
-            '--force' => true,
-        ]);
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
-        // clear permission cache
-        app()[PermissionRegistrar::class]
-            ->forgetCachedPermissions();
+DB::table('role_has_permissions')->truncate();
+DB::table('model_has_permissions')->truncate();
+DB::table('model_has_roles')->truncate();
+DB::table('roles')->truncate();
+Permission::truncate();
+
+DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+
+app()[PermissionRegistrar::class]->forgetCachedPermissions();
+
 
         // Permissions
         $models = [
