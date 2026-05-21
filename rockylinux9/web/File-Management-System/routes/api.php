@@ -7,12 +7,12 @@ use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
 
 
-    Route::apiResource('/areas',AreaController::class);
+    // Route::apiResource('/areas',AreaController::class);
 
-    Route::apiResource('/users',UserController::class);
+    // Route::apiResource('/users',UserController::class);
 
-    Route::apiResource('/roles', RoleController::class);
+    // Route::apiResource('/roles', RoleController::class);
 
-    Route::apiResource('/permissions', PermissionController::class);
+    // Route::apiResource('/permissions', PermissionController::class);
 
 ?>

@@ -5,29 +5,35 @@ namespace App\Http\Controllers\Web;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AreaRequest;
 use App\Models\Area;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-
-
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 
 class AreaController extends Controller
 {
     use AuthorizesRequests;
-
-    public function __construct() 
-    {
-        $this->authorizeResource(Area::class, 'area');
-    }
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        
+        $this->authorize('viewAny', Area::class);
+
         $areas = Area::latest()->paginate(10);
         return view('areas.list', [
             'areas' => $areas
         ]);
+    }
+
+    public function fetchArea(){
+        $areas = Area::latest()->paginate(10);
+
+        return view('areas.load-data',[
+            'areas' => $areas
+        ])->render();
     }
 
     /**
@@ -35,6 +41,8 @@ class AreaController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', Area::class);
+
         return view('areas.create');
     }
 
@@ -43,14 +51,17 @@ class AreaController extends Controller
      */
     public function store(AreaRequest $request)
     {
+        $this->authorize('create', Area::class);
+
         $validated = $request -> validated();
         Area::create($validated);
 
-        return redirect()
-                ->route('areas.index')
-                ->with('success', 'Tao Area Thanh Cong');
+        return response()->json([
+            'status'  => true,
+            'message' => 'Tao Area Thanh Cong.'
+        ]);
     }
-
+//->route('areas.index')
     /**
      * Display the specified resource.
      */
@@ -61,8 +72,11 @@ class AreaController extends Controller
      */
     public function edit(Area $area)
     {
-        return view('areas.edit', [
-            'area' => $area
+        $this->authorize('update', $area);
+
+        return response()->json([
+            'status' => true,
+            'data'   => $area
         ]);
     }
 
@@ -71,12 +85,15 @@ class AreaController extends Controller
      */
     public function update(AreaRequest $request, Area $area)
     {
+        $this->authorize('update', $area);
+
         $validated = $request->validated();
         $area->update($validated);
         
-        return redirect()
-                ->route('areas.index')
-                ->with('success', 'Cap Nhat Area Thanh Cong');
+        return response()->json([
+            'status'  => true,
+            'message' => 'Cap Nhat Area '. $area->name .' Thanh Cong' 
+        ]);
     }
 
     /**
@@ -84,6 +101,8 @@ class AreaController extends Controller
      */
     public function destroy(Area $area)
     {
+        $this->authorize('delete', $area);
+
         if($area->delete()){
             return response()->json([
                 'status' => true,

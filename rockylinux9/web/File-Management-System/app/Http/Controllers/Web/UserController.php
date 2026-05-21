@@ -13,15 +13,16 @@ class UserController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct()
-    {
-        $this->authorizeResource(User::class, 'user');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(User::class, 'user');
+    // }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('viewAny', User::class);
         $users = User::latest()->paginate(25);
         return view('users.list', [
             'users' => $users
@@ -48,6 +49,8 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('update', $user);
+
         $roles = Role::latest()->get();
         $hasRoles = $user->roles->pluck('id');
 
@@ -63,6 +66,8 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
+        $this->authorize('update', $user);
+
         $validated = $request->validated();
         $user->update($validated);
         $user->syncRoles($request->role);
@@ -75,6 +80,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('delete', $user);
+
         if ($user->delete()) {
             return response()->json([
                 'status' => true,

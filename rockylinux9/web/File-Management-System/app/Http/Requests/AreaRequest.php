@@ -13,7 +13,7 @@ class AreaRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,9 +24,8 @@ class AreaRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'min: 1', [
+            'name' => ['required', 'min:1', 
                     Rule::unique('areas','name')->ignore($this->area)
-                ]
             ]
         ];
     }

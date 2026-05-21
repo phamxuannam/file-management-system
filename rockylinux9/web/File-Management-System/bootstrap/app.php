@@ -12,12 +12,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias([
-            'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
-            'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
-            'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class
-        ]);
+        // $middleware->alias([
+        //     'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
+        //     'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
+        //     'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class
+        // ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
-    })->create();
+    })
+    ->withExceptions(function (Exceptions $exceptions): void {
+    $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e, $request) {
+        dd('403 từ đây', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10));
+    });
+})->create();
