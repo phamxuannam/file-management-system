@@ -23,8 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::get('areas/fetch', [AreaController::class, 'fetchArea'])->name('areas.fetch');
     Route::resource('areas', AreaController::class);
 
-    Route::get('fetch',[UserController::class,'fetchUser'])->name('users.fetch');
-    Route::resource('users', UserController::class)->except('create','store');
+    Route::get('users/fetch', [UserController::class, 'fetchUser'])->name('users.fetch');
+    Route::resource('users', UserController::class);
 
     Route::resource('files', FileController::class);
 });

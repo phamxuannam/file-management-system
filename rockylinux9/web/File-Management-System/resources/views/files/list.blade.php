@@ -5,9 +5,9 @@
     {{-- <div class="col-md-2"></div> --}}
     <div class="col-md">
         <h2 class="d-flex justify-content-between">
-            <span> Area Management </span>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addAreaModal">Create
-                Area</button>
+            <span> File Management </span>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFileModal">Create
+                File</button>
         </h2>
         <h4 class="text-primary my-4 success_message_create"></h4>
         <h4 class="text-success my-4 success_message_edit"> </h4>
@@ -18,27 +18,29 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Created At</th>
-                        <th scope="col">Updated At</th>
+                        <th scope="col">File Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Owner</th>
+                        <th scope="col">Visiblity</th>
+                        <th scope="col">Created Time</th>
+                        <th scope="col">Updated Time</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
                 <tbody id="table-body">
-                    @include('areas.load-data')
+                    @include('files.load-data')
                 </tbody>
             </table>
             <div class="mt-4 d-flex justify-content-center">
-                {{ $areas->links() }}
+                {{ $files->links() }}
             </div>
         </div>
     </div>
     {{-- </div> --}}
 
-
-    @include('areas.create')
-    @include('areas.edit')
-    @include('areas.script')
+    @include('files.create')
+    @include('files.edit')
+    @include('files.script')
 @endsection
 
 @push('scripts')

@@ -17,22 +17,24 @@ class FileController extends Controller
 {
     use AuthorizesRequests;
 
-    public function __construct()
-    {
-        $this->authorizeResource(File::class, 'file');
-    }
+    // public function __construct()
+    // {
+    //     $this->authorizeResource(File::class, 'file');
+    // }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
+        $this->authorize('viewAny', File::class);
+
         $user = Auth::user();
         $files = File::visibleTo($user)
                         ->with('user')
                         ->latest()
                         ->paginate(25);
         
-        return view('files.index', [
+        return view('files.list', [
             'files' => $files
         ]);
     }
@@ -42,6 +44,8 @@ class FileController extends Controller
      */
     public function create()
     {
+        $this->authorize('create', File::class);
+
         return view('files.create');
     }
 
@@ -50,6 +54,8 @@ class FileController extends Controller
      */
     public function store(FileCreationRequest $request)
     {
+        $this->authorize('create', File::class);
+
         $validated = $request->validated();
 
         $fileUpload = $request->file('file');
@@ -78,6 +84,7 @@ class FileController extends Controller
     }
 
     public function download(File $file){
+
         $this->authorize('download', $file);
 
         $path = $file->file_path;
@@ -97,6 +104,8 @@ class FileController extends Controller
      */
     public function edit(File $file)
     {
+        $this->authorize('update', $file);
+
         return view('files.edit', [
             'file' => $file
         ]);
@@ -107,6 +116,8 @@ class FileController extends Controller
      */
     public function update(FileUpdateRequest $request, File $file)
     {
+        $this->authorize('update', $file);
+
         $validated = $request->validated();
         
         $user = Auth::user();
@@ -153,6 +164,8 @@ class FileController extends Controller
      */
     public function destroy(File $file)
     {
+        $this->authorize('delete', $file);
+
         $path = $file->file_path;
         if($file->delete()){
             Storage::delete($path);

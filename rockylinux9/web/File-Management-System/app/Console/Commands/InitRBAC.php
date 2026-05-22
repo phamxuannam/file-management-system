@@ -13,7 +13,7 @@ use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
 
-#[Signature('app:init-r-b-a-c')]
+#[Signature('app:init-rbac')]
 #[Description('Command description')]
 class InitRBAC extends Command
 {
@@ -22,6 +22,7 @@ class InitRBAC extends Command
      */
     public function handle()
     {
+        // RUN php artisan app:init-RBAC
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
@@ -112,7 +113,7 @@ class InitRBAC extends Command
             [
                 'fullname' => 'Super Admin',
                 'password' => Hash::make('1234567890'),
-                'area_id'  => 1
+                'area_id'    => null
             ]
         );
 

@@ -3,11 +3,14 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserCreationRequest;
 use App\Http\Requests\UserUpdateRequest;
+use App\Models\Area;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Spatie\Permission\Models\Role;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -24,20 +27,48 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
         $users = User::latest()->paginate(25);
+        $areas = Area::latest()->get();
+        $roles = Role::latest()->get();
         return view('users.list', [
-            'users' => $users
+            'users' => $users,
+            'areas' => $areas,
+            'roles' => $roles
         ]);
+    }
+
+    public function fetchUser(){
+        $users = User::latest()->paginate(25);
+
+        return view('users.load-data',[
+            'users' => $users
+        ])->render();
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create() {
+        $roles = Role::latest()->get();
+
+        return view('users.create', compact('roles'));
+    }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request) {}
+    public function store(UserCreationRequest $request) {
+   
+        $validated = $request->validated();
+        $validated['password'] = Hash::make($validated['password']);
+
+        $user = User::create($validated);
+        $user->syncRoles($request->role);
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Tao User Thanh Cong'
+        ]);
+    }
 
     /**
      * Display the specified resource.
@@ -53,11 +84,13 @@ class UserController extends Controller
 
         $roles = Role::latest()->get();
         $hasRoles = $user->roles->pluck('id');
+        $areas = Area::lastest()->get();
 
         return view('users.edit', [
             'user'  => $user,
             'roles' => $roles,
-            'hasRoles' => $hasRoles
+            'hasRoles' => $hasRoles,
+            'areas' => $areas
         ]);
     }
 
@@ -72,7 +105,10 @@ class UserController extends Controller
         $user->update($validated);
         $user->syncRoles($request->role);
 
-        return redirect()->route('users.index')->with('success', 'Cap Nhat User Thanh Cong');
+        return response()->json([
+            'status' => true,
+            'message' => 'Cap Nhat User Thanh Cong',
+        ]);
     }
 
     /**

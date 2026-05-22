@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password;
 
 class UserUpdateRequest extends FormRequest
@@ -24,12 +25,9 @@ class UserUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'between: 8, 255', 'string'],
+            'fullname' => ['required', 'between: 8, 255','string'],
             // 'email'=> ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'confirmed', 
-                Password::min(8)->mixedCase()->numbers()->symbols()
-            ],
-            'area_id' => ['required', 'exists: areas,id']
+            'area_id' => ['required', Rule::exists('areas', 'id')]
         ];
     }
 }

@@ -1,15 +1,18 @@
 @foreach ($users as $i => $user)
-    <tbody>
-        <tr>
-            <th scope="col">{{ $i + 1 }}</th>
-            <th scope="col">{{ $user->fullname }}</th>
-            <th scope="col">{{ $user->email }}</th>
-            <th scope="col">{{ $user->area_id }}</th>
-            <th scope="col">{{ $user->created_at }}</th>
-            <th scope="col">
-                <a href="" class="btn btn-sm btn-success editBtn"> <i class="las la-edit"></i> </a>
-                <a href="" class="btn btn-sm btn-danger deleteBtn"> <i class="las la-times"></i> </a>
-            </th>
-        </tr>
-    </tbody>
+    <tr>
+        <th scope="col">{{ $i + 1 }}</th>
+        <th scope="col">{{ $user->fullname }}</th>
+        <th scope="col">{{ $user->email }}</th>
+        <th scope="col">{{ $user->roles->pluck('name')->implode(', ') }}</th>
+        <th scope="col">{{ $user->area->name ?? null }}</th>
+        <th scope="col">{{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}</th>
+        <th scope="col">
+            <a href="#" class="btn btn-sm btn-success editBtn" data-id={{ $user->id }}
+                data-email="{{ $user->email }}" data-name="{{ $user->fullname }}" data-area="{{ $user->area_id }}"
+                data-role="{{ $user->getRoleNames()->first() }}">
+                <i class="las la-edit"></i> </a>
+            <a href="#" class="btn btn-sm btn-danger deleteBtn" data-id="{{ $user->id }}">
+                <i class="las la-times"></i> </a>
+        </th>
+    </tr>
 @endforeach
