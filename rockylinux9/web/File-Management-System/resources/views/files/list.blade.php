@@ -6,8 +6,7 @@
     <div class="col-md">
         <h2 class="d-flex justify-content-between">
             <span> File Management </span>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFileModal">Create
-                File</button>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFileModal">Upload File</button>
         </h2>
         <h4 class="text-primary my-4 success_message_create"></h4>
         <h4 class="text-success my-4 success_message_edit"> </h4>
@@ -18,12 +17,9 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">File Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Owner</th>
-                        <th scope="col">Visiblity</th>
-                        <th scope="col">Created Time</th>
-                        <th scope="col">Updated Time</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Created At</th>
+                        <th scope="col">Updated At</th>
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
@@ -38,12 +34,15 @@
     </div>
     {{-- </div> --}}
 
+
+
     @include('files.create')
     @include('files.edit')
     @include('files.script')
 @endsection
 
 @push('scripts')
+    <script>    document.getElementById('addFileModal')</script>
     <script src="{{ asset('js/areas.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">

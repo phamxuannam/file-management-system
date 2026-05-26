@@ -2,10 +2,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="addModalLabel">Create User</h1>
+                <h1 class="modal-title fs-5" id="addModalLabel">Upload File</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="addFile" enctype="multipart/form-data" autocomplete="off">
+
+            <form id="addFile" enctype="multipart/form-data">
                 @csrf
 
                 <input type="text" style="display:none">
@@ -20,7 +21,7 @@
 
                     <div class="mb-3">
                         <label class="col-form-label">Description:</label>
-                        <textarea name="description" class="form-control" id="description">
+                        <textarea name="description" class="form-control" id="description"></textarea>
                         <span class="text-danger error-text description_error"></span>
                     </div>
 
@@ -52,10 +53,33 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
                 </div>
 
             </form>
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -24,6 +24,9 @@ class InitRBAC extends Command
     {
         // RUN php artisan app:init-RBAC
 
+        //chạy migrate
+        Artisan::call('migrate', ['--force' => true]);
+
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         DB::table('role_has_permissions')->truncate();
