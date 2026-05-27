@@ -13,14 +13,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+use function Termwind\render;
+
 class FileController extends Controller
 {
     use AuthorizesRequests;
 
-    // public function __construct()
-    // {
-    //     $this->authorizeResource(File::class, 'file');
-    // }
     /**
      * Display a listing of the resource.
      */
@@ -39,6 +37,17 @@ class FileController extends Controller
         ]);
     }
 
+    public function fetchFile(){
+        $user = Auth::user();
+        $files = File::visibleTo($user)
+                    ->with('user')
+                    ->latest()
+                    ->paginate(25);
+
+        return view('files.load-data', [
+            'files' => $files
+        ])->render();
+    }
     /**
      * Show the form for creating a new resource.
      */
@@ -53,7 +62,8 @@ class FileController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(FileCreationRequest $request)
-    {
+    {   
+         
         $this->authorize('create', File::class);
 
         $validated = $request->validated();
@@ -80,7 +90,10 @@ class FileController extends Controller
             throw $e;
         }
 
-        return redirect()->route('files.index');
+        return response()->json([
+            'status' => true,
+            'message' => 'Upload File '. $fileUpload->getClientOriginalName() . ' Thanh Cong'
+        ]);
     }
 
     public function download(File $file){
@@ -155,8 +168,10 @@ class FileController extends Controller
             $file->update($data);
         }
         
-        
-        return redirect()->route('files.index');
+        return response()->json([
+            'status' => true,
+            'message' => 'Cap Nhat File Thanh Cong'
+        ]);
     }
 
     /**
@@ -167,6 +182,7 @@ class FileController extends Controller
         $this->authorize('delete', $file);
 
         $path = $file->file_path;
+
         if($file->delete()){
             Storage::delete($path);
 

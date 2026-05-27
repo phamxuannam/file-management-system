@@ -6,7 +6,7 @@
     <div class="col-md">
         <h2 class="d-flex justify-content-between">
             <span> File Management </span>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFileModal">Create
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFileModal">Upload
                 File</button>
         </h2>
         <h4 class="text-primary my-4 success_message_create"></h4>

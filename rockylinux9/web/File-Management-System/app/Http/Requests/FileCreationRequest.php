@@ -13,7 +13,7 @@ class FileCreationRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,11 +23,19 @@ class FileCreationRequest extends FormRequest
      */
     public function rules(): array
     {
+        
         return [
-            'file' => [ 'required', 'file', 'mimes:xlsx,xls,xlsm,csv,xltx', 'max:10240' ],
+            'file' => [ 'required', 'file', 'max:10240', 'mimes:xlsx,xls,xlsm,csv,xltx',
+                        'mimetypes:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                        application/vnd.ms-excel,application/vnd.ms-excel.sheet.macroEnabled.12,
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.template,text/csv,text/plain'
+                    ],
             'description' => [ 'max:1000', 'nullable' ],
             'user_id' => [ 'required', 'exists:users,id' ],
-            'visibility' => [ 'required', Rule::in([1, 2, 3]) ]
+            'visibility' => [ 'nullable', Rule::in([1, 2, 3]) ]
         ];
     }
+    
 }
+
+//, 'mimes:xlsx,xls,xlsm,csv,xltx'

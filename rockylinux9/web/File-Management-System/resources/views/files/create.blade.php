@@ -2,7 +2,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="addModalLabel">Create User</h1>
+                <h1 class="modal-title fs-5" id="addModalLabel">Upload File</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="addFile" enctype="multipart/form-data" autocomplete="off">
@@ -20,31 +20,34 @@
 
                     <div class="mb-3">
                         <label class="col-form-label">Description:</label>
-                        <textarea name="description" class="form-control" id="description">
+                        <textarea name="description" class="form-control" id="description"> </textarea>
                         <span class="text-danger error-text description_error"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="col-form-label">Visibility</label>
-                        <div class="d-flex gap-3">
-                            <div>
-                                <input type="radio" id="visibility_private" name="visibility" value="1">
-                                <label for="visibility_private">Private</label>
+                    @hasrole('area_manager | super_admin')
+                        <div class="mb-3">
+                            <label class="col-form-label">Visibility</label>
+                            <div class="d-flex gap-3">
+                                <div>
+                                    <input type="radio" id="visibility_private" name="visibility" value="1">
+                                    <label for="visibility_private">Private</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="visibility_area" name="visibility" value="2">
+                                    <label for="visibility_area">Area</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="visibility_public" name="visibility" value="3">
+                                    <label for="visibility_public">Public</label>
+                                </div>
                             </div>
-                            <div>
-                                <input type="radio" id="visibility_area" name="visibility" value="2">
-                                <label for="visibility_area">Area</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="visibility_public" name="visibility" value="3">
-                                <label for="visibility_public">Public</label>
-                            </div>
+                            <span class="text-danger error-text visibility_error"></span>
                         </div>
-                        <span class="text-danger error-text visibility_error"></span>
-                    </div>
+                    @endhasrole
 
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Create By:</label>
+                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                         <input type="text" value="{{ Auth::user()->fullname }}" class="form-control" disabled>
                     </div>
 
@@ -52,7 +55,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="submit" class="btn btn-primary">Upload</button>
                 </div>
 
             </form>
