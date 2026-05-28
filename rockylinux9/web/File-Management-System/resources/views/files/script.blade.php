@@ -98,7 +98,6 @@
         });
     });
 
-
     function fetchFile() {
         $.ajax({
             url: " {{ route('files.fetch') }} ",

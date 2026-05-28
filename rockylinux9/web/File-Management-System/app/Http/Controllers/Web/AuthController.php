@@ -3,14 +3,32 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UserCreationRequest;
+use App\Models\Area;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-   public function showLogin()
+    public function showRegister(){
+        return view('auth.register');
+    }
+
+    public function register(UserCreationRequest $request){
+        $validated = $request->validated();
+        $user = User::create($validated);
+        $user->roles()->attach(1);
+
+        return redirect()->route('login')->with('success', 'Dang Ky Thanh Cong');
+    }
+
+    public function showLogin()
     {
-        return view('auth.login');
+        $areas = Area::latest()->get();
+        return view('auth.login',[
+            'areas' => $areas
+        ]);
     }
 
     public function login(Request $request)
@@ -26,7 +44,7 @@ class AuthController extends Controller
         }
 
         return back()->withErrors([
-            'email' => 'Email hoac Mat Khau Khong Dung.',
+            'email' => 'Email Or Password is incorrect.',
         ])->onlyInput('email');
     }
 

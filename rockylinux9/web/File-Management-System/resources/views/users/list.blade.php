@@ -5,9 +5,20 @@
     {{-- <div class="col-md-2"></div> --}}
     <div class="col-md">
         <h2 class="d-flex justify-content-between">
-            <span> User Management </span>
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Create
-                User</button>
+
+            @hasrole('area_manager')
+                <span> Users Area: {{ Auth::user()->area->name ?? 'N/A' }} </span>
+            @endhasrole
+
+            @hasrole('super_admin')
+                <span> User Management </span>
+            @endhasrole
+
+            @can('user.create')
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">Create
+                    User</button>
+            @endcan
+
         </h2>
         <h4 class="text-primary my-4 success_message_create"></h4>
         <h4 class="text-success my-4 success_message_edit"> </h4>

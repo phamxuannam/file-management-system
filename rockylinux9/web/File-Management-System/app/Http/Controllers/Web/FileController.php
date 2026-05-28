@@ -24,8 +24,6 @@ class FileController extends Controller
      */
     public function index()
     {
-        $this->authorize('viewAny', File::class);
-
         $user = Auth::user();
         $files = File::visibleTo($user)
                         ->with('user')
@@ -47,6 +45,18 @@ class FileController extends Controller
         return view('files.load-data', [
             'files' => $files
         ])->render();
+    }
+
+    public function forGuest(){
+
+        $files = File::visibleTo()
+                        ->with('user')
+                        ->latest()
+                        ->paginate(25);
+        
+        return view('files.list', [
+            'files' => $files
+        ]);
     }
     /**
      * Show the form for creating a new resource.

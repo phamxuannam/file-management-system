@@ -24,7 +24,7 @@
                         <span class="text-danger error-text description_error"></span>
                     </div>
 
-                    @hasrole('area_manager | super_admin')
+                    @can('file.visibility')
                         <div class="mb-3">
                             <label class="col-form-label">Visibility</label>
                             <div class="d-flex gap-3">
@@ -43,14 +43,15 @@
                             </div>
                             <span class="text-danger error-text visibility_error"></span>
                         </div>
-                    @endhasrole
+                    @endcan
 
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Create By:</label>
-                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                        <input type="text" value="{{ Auth::user()->fullname }}" class="form-control" disabled>
+                        @auth
+                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                            <input type="text" value="{{ Auth::user()->fullname }}" class="form-control" disabled>
+                        @endauth
                     </div>
-
                 </div>
 
                 <div class="modal-footer">

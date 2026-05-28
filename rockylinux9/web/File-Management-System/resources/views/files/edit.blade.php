@@ -25,7 +25,7 @@
                         <span class="text-danger error-text description_error"></span>
                     </div>
 
-                    @if (Auth::user()->hasAnyRole(['area_manager']))
+                    @can('file.visibility')
                         <div class="mb-3">
                             <label class="col-form-label">Visibility</label>
                             <div class="d-flex gap-3">
@@ -44,14 +44,15 @@
                             </div>
                             <span class="text-danger error-text visibility_error"></span>
                         </div>
-                    @endif
+                    @endcan
 
-
-                    <div class="mb-3">
-                        <label for="message-text" class="col-form-label">Edit By:</label>
-                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                        <input type="text" value="{{ Auth::user()->fullname }}" class="form-control" disabled>
-                    </div>
+                    @auth
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Edit By:</label>
+                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                            <input type="text" value="{{ Auth::user()->fullname }}" class="form-control" disabled>
+                        </div>
+                    @endauth
 
                 </div>
 

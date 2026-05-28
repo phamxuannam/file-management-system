@@ -3,13 +3,16 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EditProfileRequest;
 use App\Http\Requests\UserCreationRequest;
 use App\Http\Requests\UserUpdateRequest;
 use App\Models\Area;
 use App\Models\User;
+use Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\Fluent\Concerns\Has;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
@@ -26,9 +29,11 @@ class UserController extends Controller
     public function index()
     {
         $this->authorize('viewAny', User::class);
-        $users = User::latest()->paginate(25);
+
         $areas = Area::latest()->get();
         $roles = Role::latest()->get();
+        $users = User::with('roles')->byArea(Auth::user())->latest()->paginate(25);
+       
         return view('users.list', [
             'users' => $users,
             'areas' => $areas,
@@ -37,7 +42,7 @@ class UserController extends Controller
     }
 
     public function fetchUser(){
-        $users = User::latest()->paginate(25);
+        $users = User::with('roles')->byArea(Auth::user())->latest()->paginate(25);
 
         return view('users.load-data',[
             'users' => $users
@@ -49,8 +54,13 @@ class UserController extends Controller
      */
     public function create() {
         $roles = Role::latest()->get();
+        $areas = Area::latest()->get();
 
-        return view('users.create', compact('roles'));
+        dd($areas);
+        return view('users.create', [
+            'roles' => $roles,
+            'areas' => $areas
+        ]);
     }
 
     /**
@@ -108,6 +118,19 @@ class UserController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'Cap Nhat User Thanh Cong',
+        ]);
+    }
+
+    public function editProfile(EditProfileRequest $request){
+        $validated = $request->validated();
+        Auth::user()->update([
+            'fullname' => $request->fullname,
+            'password' => Hash::make($validated['new_password'])
+        ]);
+        
+        return response()->json([
+            'status' => true,
+            'message' => 'Thay Doi Thanh Cong.',
         ]);
     }
 

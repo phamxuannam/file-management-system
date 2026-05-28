@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Builder;
 
 #[Fillable(['fullname', 'email', 'password', 'area_id'])]
 #[Hidden(['password', 'remember_token'])]
@@ -35,4 +36,13 @@ class User extends Authenticatable
     public function area(){
         return $this->belongsTo(Area::class);
     }
+
+    public function scopeByArea(Builder $query, User $user): Builder{
+        
+        if ($user->hasRole('super_admin')) return $query;
+
+        return $query->where('area_id', $user->area_id);
+
+    }
 }
+

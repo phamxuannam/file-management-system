@@ -15,59 +15,33 @@
     <!-- Divider -->
     <hr class="sidebar-divider">
 
-    @can('areas.view')
+    @can('area.view')
         <!-- Nav Item - Area Management -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('areas.index') }}" data-toggle="collapse"
-                data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+            <a class="nav-link" href="{{ route('areas.index') }}">
                 <i class="las la-tags"></i>
                 <span>Areas</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Components:</h6>
-                    <a class="collapse-item" href="buttons.html">Buttons</a>
-                    <a class="collapse-item" href="cards.html">Cards</a>
-                </div>
-            </div>
         </li>
     @endcan
 
-    @can('users.view')
+    @can('user.view')
         <!-- Nav Item - User Management -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('users.index') }}" data-toggle="collapse"
-                data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                <i class="las la-user"></i>
+            <a class="nav-link" href="{{ route('users.index') }}">
+                <i class="las la-tags"></i>
                 <span>Users</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Components:</h6>
-                    <a class="collapse-item" href="buttons.html">Buttons</a>
-                    <a class="collapse-item" href="cards.html">Cards</a>
-                </div>
-            </div>
         </li>
     @endcan
 
-    @can('files.view')
+    @can('file.view')
         <!-- Nav Item - File Management -->
         <li class="nav-item">
-            <a class="nav-link collapsed" href="{{ route('files.index') }}" data-toggle="collapse"
-                data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-                <i class="las la-file-upload"></i>
-                <span>Files Upload</span>
+            <a class="nav-link" href="{{ route('files.index') }}">
+                <i class="las la-tags"></i>
+                <span>Files</span>
             </a>
-            <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">Custom Utilities:</h6>
-                    <a class="collapse-item" href="utilities-color.html">Colors</a>
-                    <a class="collapse-item" href="utilities-border.html">Borders</a>
-                    <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                    <a class="collapse-item" href="utilities-other.html">Other</a>
-                </div>
-            </div>
         </li>
     @endcan
 

@@ -48,39 +48,102 @@
         <div class="topbar-divider d-none d-sm-block"></div>
 
         <!-- Nav Item - User Information -->
-        <li class="nav-item dropdown no-arrow">
-            <a class="nav-link dropdown-toggle" href="" id="userDropdown" role="button" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ Auth::user()->fullname }}
-                    ({{ Auth::user()->roles->pluck('name')->implode(', ') }})</span>
-            </a>
-            <!-- Dropdown - User Information -->
-            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Profile
+        <li class="nav-item dropdown no-arrow bg-gradient-primary rounded">
+            @auth
+                <a class="nav-link dropdown-toggle" href="" id="userDropdown" role="button" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false">
+                    <i class="lar la-user"></i>
+                    <span class="mr-2 d-none d-lg-inline text-white-800 small">
+                        {{ Auth::user()->fullname }}<br>
+                        @hasanyrole('area_manager|super_admin')
+                            ({{ Auth::user()->roles->pluck('name')->implode(', ') }})
+                        @endhasanyrole
+                    </span>
                 </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Settings
+
+                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                    <a class="dropdown-item editProfileBtn" href="#" data-id={{ Auth::user()->id }}
+                        data-email="{{ Auth::user()->email }}" data-name="{{ Auth::user()->fullname }}">
+                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Edit Profile
+                    </a>
+                    <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                        Logout
+                    </a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                        @csrf
+                    </form>
+                </div>
+            @else
+                <a class="nav-link" href="{{ route('login') }}">
+                    <i class="las la-sign-in-alt"></i>
+                    <span class="mr-2 d-none d-lg-inline text-white-800 small">
+                        Login
+                    </span>
                 </a>
-                <a class="dropdown-item" href="#">
-                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Activity Log
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="{{ route('logout') }}"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                    Logout
-                </a>
-                <form id="logout-form" action="{{ route('logout') }}" method="POST">
-                    @csrf
-                </form>
-            </div>
+            @endauth
         </li>
 
     </ul>
 
 </nav>
+@include('auth.editProfile')
 <!-- End of Topbar -->
+@push('scripts')
+    <script src="{{ asset('js/areas.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous">
+    </script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $(document).on('click', '.editProfileBtn', function(e) {
+            e.preventDefault();
+            let id = $(this).data('id');
+            let name = $(this).data('name');
+            let email = $(this).data('email');
+
+
+            $('#editUserModal').data('id', id);
+            $('#edit_fullname').val(name);
+            $('#edit_email').val(email);
+
+            $('#editUserModal').modal('show');
+        });
+        $(document).on('submit', '#editUser', function(e) {
+            e.preventDefault();
+            $('.error-text').text('');
+            let id = $('#editUserModal').data('id');
+            let formData = new FormData(this);
+            formData.append('_method', 'PUT');
+            $.ajax({
+                url: "{{ route('users.profile') }}",
+                method: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function(response) {
+                    $('#editUserModal').modal('hide');
+                    $('.success_message_edit').text(response.message);
+                    setTimeout(() => {
+                        $('.success_message_edit').text('');
+                    }, 2000);
+                    fetchUser();
+                },
+                error: function(error) {
+                    let errors = error.responseJSON.errors;
+                    $.each(errors, function(key, value) {
+                        $('.' + key + '_error').text(value[0]);
+                    });
+                }
+            });
+        });
+    </script>
+@endpush
