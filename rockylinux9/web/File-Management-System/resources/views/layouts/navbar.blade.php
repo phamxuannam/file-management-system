@@ -112,12 +112,12 @@
 
 
             $('#editUserModal').data('id', id);
-            $('#edit_fullname').val(name);
-            $('#edit_email').val(email);
+            $('#profile_fullname').val(name);
+            $('#profile_email').val(email);
 
-            $('#editUserModal').modal('show');
+            $('#editProfileModal').modal('show');
         });
-        $(document).on('submit', '#editUser', function(e) {
+        $(document).on('submit', '#editProfile', function(e) {
             e.preventDefault();
             $('.error-text').text('');
             let id = $('#editUserModal').data('id');

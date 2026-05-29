@@ -14,13 +14,15 @@
 
                     <div class="mb-3">
                         <label for="" class="col-form-label">Fullname:</label>
-                        <input type="text" name="fullname" class="form-control" id="edit_fullname">
+                        <input type="text" name="fullname" value="{{ old('fullname') }}" class="form-control"
+                            id="edit_fullname">
                         <span class="text-danger error-text fullname_error"></span>
                     </div>
 
                     <div class="mb-3">
                         <label class="col-form-label">Email:</label>
-                        <input type="email" name="email" class="form-control" id="edit_email" disabled>
+                        <input type="email" name="email" value="{{ old('email') }}" class="form-control"
+                            id="edit_email" disabled>
                         <span class="text-danger error-text email_error"></span>
                     </div>
 

@@ -3,26 +3,15 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EditProfileRequest;
-use App\Http\Requests\UserCreationRequest;
-use App\Http\Requests\UserUpdateRequest;
 use App\Models\Area;
 use App\Models\User;
 use Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Testing\Fluent\Concerns\Has;
 use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
     use AuthorizesRequests;
-
-    // public function __construct()
-    // {
-    //     $this->authorizeResource(User::class, 'user');
-    // }
     /**
      * Display a listing of the resource.
      */
@@ -65,24 +54,6 @@ class UserController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(UserCreationRequest $request) {
-        $this->authorize('create', User::class);
-        
-        $validated = $request->validated();
-        $validated['password'] = Hash::make($validated['password']);
-
-        $user = User::create($validated);
-        $user->syncRoles($request->role);
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Tao User Thanh Cong'
-        ]);
-    }
-
-    /**
      * Display the specified resource.
      */
     public function show(string $id) {}
@@ -107,51 +78,69 @@ class UserController extends Controller
     }
 
     /**
+     * Store a newly created resource in storage.
+     */
+    // public function store(UserCreationRequest $request) {
+    //     $this->authorize('create', User::class);
+        
+    //     $validated = $request->validated();
+    //     $validated['password'] = Hash::make($validated['password']);
+
+    //     $user = User::create($validated);
+    //     $user->syncRoles($request->role);
+
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Tao User Thanh Cong'
+    //     ]);
+    // }
+
+    /**
      * Update the specified resource in storage.
      */
-    public function update(UserUpdateRequest $request, User $user)
-    {
-        $this->authorize('update', $user);
+    // public function update(UserUpdateRequest $request, User $user)
+    // {
+    //     $this->authorize('update', $user);
 
-        $validated = $request->validated();
-        $user->update($validated);
-        $user->syncRoles($request->role);
+    //     $validated = $request->validated();
+    //     $user->update($validated);
+    //     $user->syncRoles($request->role);
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Cap Nhat User Thanh Cong',
-        ]);
-    }
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Cap Nhat User Thanh Cong',
+    //     ]);
+    // }
 
-    public function editProfile(EditProfileRequest $request){
-        $validated = $request->validated();
-        Auth::user()->update([
-            'fullname' => $request->fullname,
-            'password' => Hash::make($validated['new_password'])
-        ]);
+    // public function editProfile(EditProfileRequest $request){
+    //     $validated = $request->validated();
+    //     Auth::user()->update([
+    //         'fullname' => $request->fullname,
+    //         'password' => Hash::make($validated['new_password'])
+    //     ]);
         
-        return response()->json([
-            'status' => true,
-            'message' => 'Thay Doi Thanh Cong.',
-        ]);
-    }
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => 'Thay Doi Thanh Cong.',
+    //     ]);
+    // }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
-    {
-        $this->authorize('delete', $user);
+    // public function destroy(User $user)
+    // {
+    //     $this->authorize('delete', $user);
 
-        if ($user->delete()) {
-            return response()->json([
-                'status' => true,
-                'message' => 'Xoa User Thanh Cong'
-            ]);
-        }
-        return response()->json([
-            'status' => false,
-            'message' => 'Loi, Khong The Xoa User'
-        ]);
-    }
+    //     if ($user->delete()) {
+    //         return response()->json([
+    //             'status' => true,
+    //             'message' => 'Xoa User Thanh Cong'
+    //         ]);
+    //     }
+    //     return response()->json([
+    //         'status' => false,
+    //         'message' => 'Loi, Khong The Xoa User'
+    //     ]);
+    // }
 }

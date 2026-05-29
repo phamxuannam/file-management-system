@@ -15,24 +15,24 @@ Route::middleware('guest')->group(function () {
     Route::post('/register',[AuthController::class, 'register']);
 });
 
-// ->middleware('auth');
+Route::get('files/download/{file}', [FileController::class, 'download'])->name('files.download');
+Route::get('files', [FileController::class, 'index'])->name('files.index');
 
 Route::middleware('auth')->group(function () {
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
     Route::get('areas/fetch', [AreaController::class, 'fetchArea'])->name('areas.fetch');
-    Route::resource('areas', AreaController::class);
+    Route::resource('areas', AreaController::class)->except('store','update','destroy');
 
     Route::get('users/fetch', [UserController::class, 'fetchUser'])->name('users.fetch');
-    Route::put('users/profile', [UserController::class, 'editProfile'])->name('users.profile');
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->except('store','update','destroy');
 
     Route::get('files/fetch', [FileController::class, 'fetchFile'])->name('files.fetch');
-    Route::resource('files', FileController::class)->except('index');
+    Route::resource('files', FileController::class)->except('index','store','update','destroy');
    
 });
 
-Route::get('files', [FileController::class, 'index'])->name('files.index');
-Route::get('files/download/{file}', [FileController::class, 'download'])->name('files.download');
+
+
 

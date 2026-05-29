@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\Web;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\AreaRequest;
 use App\Models\Area;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
+
 
 class AreaController extends Controller
 {
@@ -19,10 +16,10 @@ class AreaController extends Controller
      */
     public function index()
     {
-        
         $this->authorize('viewAny', Area::class);
 
         $areas = Area::latest()->paginate(10);
+
         return view('areas.list', [
             'areas' => $areas
         ]);
@@ -49,22 +46,6 @@ class AreaController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     */
-    public function store(AreaRequest $request)
-    {
-        $this->authorize('create', Area::class);
-
-        $validated = $request -> validated();
-        Area::create($validated);
-
-        return response()->json([
-            'status'  => true,
-            'message' => 'Tao Area Thanh Cong.'
-        ]);
-    }
-    
-    /**
      * Display the specified resource.
      */
     public function show(string $id){}
@@ -76,46 +57,61 @@ class AreaController extends Controller
     {
         $this->authorize('update', $area);
 
-        return response()->json([
-            'status' => true,
-            'data'   => $area
+        return view('areas.edit', [
+            'data' => $area
         ]);
     }
 
     /**
+     * Store a newly created resource in storage.
+     */
+    // public function store(AreaRequest $request)
+    // {
+    //     $this->authorize('create', Area::class);
+
+    //     $validated = $request -> validated();
+    //     Area::create($validated);
+
+    //     return response()->json([
+    //         'status'  => true,
+    //         'message' => 'Tao Area Thanh Cong.'
+    //     ]);
+    // }
+    
+    /**
      * Update the specified resource in storage.
      */
-    public function update(AreaRequest $request, Area $area)
-    {
-        $this->authorize('update', $area);
+    // public function update(AreaRequest $request, Area $area)
+    // {
+    //     $this->authorize('update', $area);
 
-        $validated = $request->validated();
-        $area->update($validated);
+    //     $validated = $request->validated();
+    //     $area->update($validated);
         
-        return response()->json([
-            'status'  => true,
-            'message' => 'Cap Nhat Area '. $area->name .' Thanh Cong' 
-        ]);
-    }
+    //     return response()->json([
+    //         'status'  => true,
+    //         'message' => 'Cap Nhat Area '. $area->name .' Thanh Cong' 
+    //     ]);
+    // }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Area $area)
-    {
-        $this->authorize('delete', $area);
+    // public function destroy(Area $area)
+    // {
+    //     $this->authorize('delete', $area);
 
-        if($area->delete()){
-            return response()->json([
-                'status' => true,
-                'message' => 'Xoa Area Thanh Cong'
-            ]);
-        }
+    //     if($area->delete()){
+    //         return response()->json([
+    //             'status' => true,
+    //             'message' => 'Xoa Area Thanh Cong'
+    //         ]);
+    //     }
         
-        return response()->json([
-            'status' => false,
-            'message' => 'Loi, Khong The Xoa Area'
-        ]);
+    //     return response()->json([
+    //         'status' => false,
+    //         'message' => 'Loi, Khong The Xoa Area'
+    //     ]);
       
-    }
+    // }
 }

@@ -26,6 +26,7 @@ class AuthController extends Controller
     public function showLogin()
     {
         $areas = Area::latest()->get();
+        
         return view('auth.login',[
             'areas' => $areas
         ]);
