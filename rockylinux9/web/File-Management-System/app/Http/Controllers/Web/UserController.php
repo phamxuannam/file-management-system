@@ -32,7 +32,7 @@ class UserController extends Controller
 
         $areas = Area::latest()->get();
         $roles = Role::latest()->get();
-        $users = User::with('roles')->byArea(Auth::user())->latest()->paginate(25);
+        $users = User::byArea(Auth::user())->with('roles')->latest()->paginate(25);
        
         return view('users.list', [
             'users' => $users,
@@ -42,7 +42,7 @@ class UserController extends Controller
     }
 
     public function fetchUser(){
-        $users = User::with('roles')->byArea(Auth::user())->latest()->paginate(25);
+        $users = User::byArea(Auth::user())->with('roles')->latest()->paginate(25);
 
         return view('users.load-data',[
             'users' => $users
@@ -53,10 +53,11 @@ class UserController extends Controller
      * Show the form for creating a new resource.
      */
     public function create() {
+        $this->authorize('create', User::class);
+
         $roles = Role::latest()->get();
         $areas = Area::latest()->get();
 
-        dd($areas);
         return view('users.create', [
             'roles' => $roles,
             'areas' => $areas
@@ -67,7 +68,8 @@ class UserController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(UserCreationRequest $request) {
-   
+        $this->authorize('create', User::class);
+        
         $validated = $request->validated();
         $validated['password'] = Hash::make($validated['password']);
 

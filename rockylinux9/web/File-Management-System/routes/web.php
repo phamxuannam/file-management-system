@@ -15,14 +15,11 @@ Route::middleware('guest')->group(function () {
     Route::post('/register',[AuthController::class, 'register']);
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
-
-
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
+// ->middleware('auth');
 
 Route::middleware('auth')->group(function () {
+
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
     Route::get('areas/fetch', [AreaController::class, 'fetchArea'])->name('areas.fetch');
     Route::resource('areas', AreaController::class);
@@ -30,13 +27,12 @@ Route::middleware('auth')->group(function () {
     Route::get('users/fetch', [UserController::class, 'fetchUser'])->name('users.fetch');
     Route::put('users/profile', [UserController::class, 'editProfile'])->name('users.profile');
     Route::resource('users', UserController::class);
+
+    Route::get('files/fetch', [FileController::class, 'fetchFile'])->name('files.fetch');
+    Route::resource('files', FileController::class)->except('index');
    
 });
 
-Route::get('files/fetch', [FileController::class, 'fetchFile'])->name('files.fetch');
-Route::get('file/download/{file}', [FileController::class, 'download'])->name('files.download');
-Route::resource('files', FileController::class);
-// Route::get('/index', function () {
-//     return view('layouts.index');
-// });
+Route::get('files', [FileController::class, 'index'])->name('files.index');
+Route::get('files/download/{file}', [FileController::class, 'download'])->name('files.download');
 

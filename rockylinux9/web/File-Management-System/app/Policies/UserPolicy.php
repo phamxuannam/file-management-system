@@ -27,7 +27,7 @@ class UserPolicy
      */
     public function create(?User $user): bool
     {
-        return $user->can('user.create');
+        return $user->can('user.create') ;
     }
 
     /**
@@ -37,6 +37,11 @@ class UserPolicy
     {
         if ($user->can('user.edit')) return true; //super admin assign roles for user
 
+        return $user->id === $model->id;
+    }
+
+    public function editProfile(User $user, User $model): bool
+    {
         return $user->id === $model->id;
     }
     /**

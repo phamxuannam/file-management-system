@@ -39,9 +39,9 @@ class User extends Authenticatable
 
     public function scopeByArea(Builder $query, User $user): Builder{
         
-        if ($user->hasRole('super_admin')) return $query;
-
-        return $query->where('area_id', $user->area_id);
+        if ($user->hasRole('super_admin')) return $query; //select * from user
+ 
+        return $query->where('area_id', $user->area_id);  //select * form user where user.area_id == Auth::user()->area_id
 
     }
 }

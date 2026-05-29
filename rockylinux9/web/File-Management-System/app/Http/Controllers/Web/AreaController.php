@@ -26,6 +26,7 @@ class AreaController extends Controller
         return view('areas.list', [
             'areas' => $areas
         ]);
+
     }
 
     public function fetchArea(){
@@ -34,6 +35,7 @@ class AreaController extends Controller
         return view('areas.load-data',[
             'areas' => $areas
         ])->render();
+
     }
 
     /**
@@ -61,7 +63,7 @@ class AreaController extends Controller
             'message' => 'Tao Area Thanh Cong.'
         ]);
     }
-//->route('areas.index')
+    
     /**
      * Display the specified resource.
      */

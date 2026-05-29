@@ -51,7 +51,7 @@
     $(document).on('submit', '#editFile', function(e) {
         e.preventDefault();
         let id = $('#editFileModal').data('id');
-        console.log(id);
+        $('.error-text').text('');
 
         let formData = new FormData(this);
         formData.append('_method', 'PUT');

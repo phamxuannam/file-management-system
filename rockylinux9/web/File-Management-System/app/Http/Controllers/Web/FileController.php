@@ -47,17 +47,6 @@ class FileController extends Controller
         ])->render();
     }
 
-    public function forGuest(){
-
-        $files = File::visibleTo()
-                        ->with('user')
-                        ->latest()
-                        ->paginate(25);
-        
-        return view('files.list', [
-            'files' => $files
-        ]);
-    }
     /**
      * Show the form for creating a new resource.
      */
@@ -117,10 +106,7 @@ class FileController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    public function show(string $id){}
 
     /**
      * Show the form for editing the specified resource.
