@@ -13,7 +13,7 @@ class FileUpdateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,9 +24,13 @@ class FileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'file' => [ 'nullable', 'file', 'mimes:xlsx,xls,xlsm,csv,xltx', 'max:10240' ],
+           'file' => [ 'nullable', 'file', 'max:10240', 'mimes:xlsx,xls,xlsm,csv,xltx',
+                        'mimetypes:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                        application/vnd.ms-excel,application/vnd.ms-excel.sheet.macroEnabled.12,
+                        application/vnd.openxmlformats-officedocument.spreadsheetml.template,text/csv,text/plain'
+                    ],
             'description' => [ 'nullable', 'max:1000' ],
-            'visibility' => [ Rule::in([1, 2, 3]) ]
+            'visibility' => [ 'nullable', Rule::in([1, 2, 3]) ]
         ];
     }
 }

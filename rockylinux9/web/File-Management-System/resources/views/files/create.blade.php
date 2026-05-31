@@ -21,34 +21,38 @@
 
                     <div class="mb-3">
                         <label class="col-form-label">Description:</label>
-                        <textarea name="description" class="form-control" id="description"></textarea>
+                        <textarea name="description" class="form-control" id="description"> </textarea>
                         <span class="text-danger error-text description_error"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="col-form-label">Visibility</label>
-                        <div class="d-flex gap-3">
-                            <div>
-                                <input type="radio" id="visibility_private" name="visibility" value="1">
-                                <label for="visibility_private">Private</label>
+                    @can('file.visibility')
+                        <div class="mb-3">
+                            <label class="col-form-label">Visibility</label>
+                            <div class="d-flex gap-3">
+                                <div>
+                                    <input type="radio" id="visibility_private" name="visibility" value="1">
+                                    <label for="visibility_private">Private</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="visibility_area" name="visibility" value="2">
+                                    <label for="visibility_area">Area</label>
+                                </div>
+                                <div>
+                                    <input type="radio" id="visibility_public" name="visibility" value="3">
+                                    <label for="visibility_public">Public</label>
+                                </div>
                             </div>
-                            <div>
-                                <input type="radio" id="visibility_area" name="visibility" value="2">
-                                <label for="visibility_area">Area</label>
-                            </div>
-                            <div>
-                                <input type="radio" id="visibility_public" name="visibility" value="3">
-                                <label for="visibility_public">Public</label>
-                            </div>
+                            <span class="text-danger error-text visibility_error"></span>
                         </div>
-                        <span class="text-danger error-text visibility_error"></span>
-                    </div>
+                    @endcan
 
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Create By:</label>
-                        <input type="text" value="{{ Auth::user()->fullname }}" class="form-control" disabled>
+                        @auth
+                            <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                            <input type="text" value="{{ Auth::user()->fullname }}" class="form-control" disabled>
+                        @endauth
                     </div>
-
                 </div>
 
                 <div class="modal-footer">

@@ -14,51 +14,58 @@
 
                     <div class="mb-3">
                         <label for="" class="col-form-label">Fullname:</label>
-                        <input type="text" name="fullname" class="form-control" id="edit_fullname">
+                        <input type="text" name="fullname" value="{{ old('fullname') }}" class="form-control"
+                            id="edit_fullname">
                         <span class="text-danger error-text fullname_error"></span>
                     </div>
 
                     <div class="mb-3">
                         <label class="col-form-label">Email:</label>
-                        <input type="email" name="email" class="form-control" id="edit_email" disabled>
+                        <input type="email" name="email" value="{{ old('email') }}" class="form-control"
+                            id="edit_email" disabled>
                         <span class="text-danger error-text email_error"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="edit_area" class="col-form-label">Area</label>
+                    @can('users.edit')
 
-                        <div class="d-flex flex-wrap gap-3 mb-3">
-                            @if ($areas->isNotEmpty())
-                                @foreach ($areas as $area)
-                                    <div class="mt-3">
-                                        {{-- {{ $hasRoles->contains($role->id) ? 'checked' : '' }} --}}
-                                        <input type="radio" id="edit_area-{{ $area->id }}" class="rounded"
-                                            name="area_id" value="{{ $area->id }}">
-                                        <label for="area-{{ $area->id }}">{{ $area->name }}</label>
-                                    </div>
-                                @endforeach
-                            @endif
+                        <div class="mb-3">
+                            <label for="edit_area" class="col-form-label">Area</label>
 
+                            <div class="d-flex flex-wrap gap-3 mb-3">
+                                @if ($areas->isNotEmpty())
+                                    @foreach ($areas as $area)
+                                        <div class="mt-3">
+                                            {{-- {{ $hasRoles->contains($role->id) ? 'checked' : '' }} --}}
+                                            <input type="radio" id="edit_area-{{ $area->id }}" class="rounded"
+                                                name="area_id" value="{{ $area->id }}">
+                                            <label for="area-{{ $area->id }}">{{ $area->name }}</label>
+                                        </div>
+                                    @endforeach
+                                @endif
+
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="edit_role" class="col-form-label">Role</label>
+                        <div class="mb-3">
+                            <label for="edit_role" class="col-form-label">Role</label>
 
-                        <div class="d-flex flex-wrap gap-3 mb-3">
-                            @if ($roles->isNotEmpty())
-                                @foreach ($roles as $role)
-                                    <div class="mt-3">
-                                        {{-- {{ $hasRoles->contains($role->id) ? 'checked' : '' }} --}}
-                                        <input type="radio" id="edit_role-{{ $role->id }}" class="rounded"
-                                            name="role" value="{{ $role->name }}">
-                                        <label for="role-{{ $role->id }}">{{ $role->name }}</label>
-                                    </div>
-                                @endforeach
-                            @endif
+                            <div class="d-flex flex-wrap gap-3 mb-3">
+                                @if ($roles->isNotEmpty())
+                                    @foreach ($roles as $role)
+                                        <div class="mt-3">
+                                            {{-- {{ $hasRoles->contains($role->id) ? 'checked' : '' }} --}}
+                                            <input type="radio" id="edit_role-{{ $role->id }}" class="rounded"
+                                                name="role" value="{{ $role->name }}">
+                                            <label for="role-{{ $role->id }}">{{ $role->name }}</label>
+                                        </div>
+                                    @endforeach
+                                @endif
 
+                            </div>
                         </div>
-                    </div>
+
+                    @endcan
+
 
                     <div class="mb-3">
                         <label for="message-text" class="col-form-label">Create By:</label>

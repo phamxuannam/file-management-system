@@ -34,8 +34,8 @@ class UserCreationRequest extends FormRequest
             'area_id' => ['nullable', Rule::exists('areas','id')]
         ];
 
-        if(!Auth::user()->hasRole('super_admin')){
-            $rules['area_id'] = ['required', Rule::exists('areas','id')];
+        if (!Auth::check() || !Auth::user()->hasRole('super_admin')) {
+            $rules['area_id'] = ['required', Rule::exists('areas', 'id')];
         }
         
         return $rules;

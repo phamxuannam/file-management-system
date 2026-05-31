@@ -35,7 +35,6 @@
     </div>
     {{-- </div> --}}
 
-
     @include('areas.create')
     @include('areas.edit')
     @include('areas.script')

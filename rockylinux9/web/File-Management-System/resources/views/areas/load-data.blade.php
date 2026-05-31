@@ -5,8 +5,8 @@
         <td scope="col">{{ \Carbon\Carbon::parse($area->created_at)->format('d M, Y') }}</td>
         <td scope="col">{{ \Carbon\Carbon::parse($area->updated_at)->format('d M, Y') }}</td>
         <td scope="col">
-            <a href="#" class="btn btn-sm btn-success editBtn" data-id={{ $area->id }}
-                data-name={{ $area->name }}>
+            <a href="#" class="btn btn-sm btn-success editBtn" data-id="{{ $area->id }}"
+                data-name="{{ $area->name }}">
                 <i class="las la-edit"></i>
             </a>
             <a href="#" class="btn btn-sm btn-danger deleteBtn" data-id={{ $area->id }}>

@@ -1,32 +1,38 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Web\AreaController;
+use App\Http\Controllers\Web\AuthController;
 use App\Http\Controllers\Web\FileController;
 use App\Http\Controllers\Web\UserController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::middleware('guest')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+
+    Route::get('/register',[AuthController::class, 'showRegister'])->name('register');
+    Route::post('/register',[AuthController::class, 'register']);
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('files/download/{file}', [FileController::class, 'download'])->name('files.download');
+Route::get('files', [FileController::class, 'index'])->name('files.index');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     
     Route::get('areas/fetch', [AreaController::class, 'fetchArea'])->name('areas.fetch');
-    Route::resource('areas', AreaController::class);
+    Route::resource('areas', AreaController::class)->except('store','update','destroy');
 
     Route::get('users/fetch', [UserController::class, 'fetchUser'])->name('users.fetch');
-    Route::resource('users', UserController::class);
+    Route::resource('users', UserController::class)->except('store','update','destroy');
 
-    Route::resource('files', FileController::class);
+    Route::get('files/fetch', [FileController::class, 'fetchFile'])->name('files.fetch');
+    Route::resource('files', FileController::class)->except('index','store','update','destroy');
+   
 });
 
-require __DIR__.'/auth.php';
+
+
+

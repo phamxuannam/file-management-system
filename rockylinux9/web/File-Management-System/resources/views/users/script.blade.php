@@ -35,16 +35,22 @@
 
     $(document).on('click', '.editBtn', function(e) {
         e.preventDefault();
+
         let id = $(this).data('id');
         let name = $(this).data('name');
         let email = $(this).data('email');
         let areaId = $(this).data('area');
         let role = $(this).data('role')
 
+        console.log(name);
+        console.log(email);
 
         $('#editUserModal').data('id', id);
         $('#edit_fullname').val(name);
-        $('#edit_email').val(email);
+        console.log('after set:', $('#edit_fullname').val());
+        console.log($('[id="edit_fullname"]').length);
+
+        $('#edit_email').val($(this).data('email'));
 
         // Check radio area đúng
         $('input[name="area_id"]').prop('checked', false);

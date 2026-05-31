@@ -22,7 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-    $exceptions->render(function (\Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException $e, $request) {
-        dd('403 từ đây', debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 10));
-    });
-})->create();
+        //
+    }) 
+    ->withExceptions(function (Exceptions $exceptions): void {
+        //
+    })
+->create();

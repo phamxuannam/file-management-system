@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class File extends Model
 {
@@ -19,7 +20,7 @@ class File extends Model
     ];
 
     public function user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
     public function scopeVisibleTo(Builder $query, ?User $user): Builder{
@@ -44,4 +45,15 @@ class File extends Model
         });
 
     }
+
+    public function getVisibilityLabelAttribute(): string{
+        return match($this->visibility) {
+            1 => 'Private',
+            2 => 'Area',
+            3 => 'Public',
+            default => 'Private'
+        };
+    }
 }
+
+

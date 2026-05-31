@@ -26,7 +26,7 @@ class InitRBAC extends Command
 
         //chạy migrate
         Artisan::call('migrate', ['--force' => true]);
-
+        
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
 
         DB::table('role_has_permissions')->truncate();
@@ -38,7 +38,6 @@ class InitRBAC extends Command
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
-
 
         // Permissions
         $models = [
