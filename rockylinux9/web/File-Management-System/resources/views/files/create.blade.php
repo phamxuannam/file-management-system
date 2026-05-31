@@ -5,7 +5,8 @@
                 <h1 class="modal-title fs-5" id="addModalLabel">Upload File</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="addFile" enctype="multipart/form-data" autocomplete="off">
+
+            <form id="addFile" enctype="multipart/form-data">
                 @csrf
 
                 <input type="text" style="display:none">
@@ -63,3 +64,26 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
