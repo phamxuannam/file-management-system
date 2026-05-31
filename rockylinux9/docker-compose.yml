@@ -9,7 +9,8 @@ services:
     depends_on:
       - mysql
     volumes:
-      - ./web:/var/www/html
+    - ./web/File-Management-System:/var/www/html    #my-laptop
+      # - ./web:/var/www/html                       #company 
 
   mysql:
     image: mysql:8.0

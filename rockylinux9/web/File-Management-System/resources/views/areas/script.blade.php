@@ -6,9 +6,9 @@
     });
 
     //create
-    $(document).on('submit', '#addArea', function(e) {
+    $(document).on('click', '#createArea', function(e) {
         e.preventDefault();
-        let formData = new FormData(this);
+        let formData = new FormData($('#addArea')[0]);
         $('.error-text').text('');
 
         $.ajax({
@@ -18,10 +18,36 @@
             contentType: false,
             processData: false,
             success: function(response) {
+                $('#addAreaModal').modal('hide');
                 $('.success_message_create').text(response.message);
                 setTimeout(() => {
                     $('.success_message_create').text('');
                 }, 2000);
+                $('#addArea')[0].reset();
+                fetchArea();
+            },
+            error: function(err) {
+                let errors = err.responseJSON.errors;
+                $.each(errors, function(key, value) {
+                    $('.' + key + '_error').text(value[0]);
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '#createAndCreateAnother', function(e) {
+        e.preventDefault();
+        let formData = new FormData($('#addArea')[0]);
+        $('.error-text').text('');
+
+        $.ajax({
+            url: "{{ route('areas.store') }}",
+            method: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+                alert(response.message);
                 $('#addArea')[0].reset();
                 fetchArea();
             },
@@ -71,7 +97,7 @@
             error: function(error) {
                 let errors = error.responseJSON.errors;
                 $.each(errors, function(key, values) {
-                    $('.' + key + '_error').text(value[0]);
+                    $('.' + key + '_error').text(values[0]);
                 });
             }
         });

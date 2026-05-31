@@ -1,16 +1,23 @@
 FROM rockylinux:9
 
-RUN dnf -y update && \
+# RUN dnf -y update && \
+#     dnf module reset php -y && \
+#     dnf module enable php:8.3 -y && \
+#     dnf -y install httpd php php-cli php-common php-mysqlnd php-fpm && \
+#     dnf clean all
+
+RUN dnf -y update --allowerasing && \
     dnf module reset php -y && \
     dnf module enable php:8.3 -y && \
-    dnf -y install httpd php php-cli php-common php-mysqlnd php-fpm && \
+    dnf -y install --allowerasing httpd php php-cli php-common php-mysqlnd php-fpm php-zip php-xml php-mbstring unzip zip curl git && \
     dnf clean all
+
+#composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Fix Apache + runtime
 RUN mkdir -p /run/httpd /run/php-fpm && \
     echo "ServerName localhost" >> /etc/httpd/conf/httpd.conf
-
-
 
 # Bật mod_rewrite (bỏ comment dòng LoadModule)
 RUN sed -i 's/^#LoadModule rewrite_module/LoadModule rewrite_module/' /etc/httpd/conf/httpd.conf
